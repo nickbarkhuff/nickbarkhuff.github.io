@@ -1,0 +1,43 @@
+*{box-sizing: border-box}
+html, body, #root{height: 100%}
+body{margin: 0}
+
+
+
+h1, h2, h3{
+    margin: 0;
+    font: inherit;
+}
+
+
+
+.ff1{font-family: sans-serif}
+
+.fs1{font-size: 1rem}
+.fs2{font-size: 2rem}
+.fs3{font-size: 3rem}
+
+.c1{color: white}
+
+.bg1{background-color: #0f0f0f}
+.bg2{background-color: #c0392b}
+
+.pb1{padding-bottom: 1rem}
+.p2{padding: 3rem}
+.pb2{padding-bottom: 3rem}
+
+
+
+.flex1{flex: 1}
+.flex3{flex: 3}
+.dFlex{display: flex}
+.fwWrap{flex-wrap: wrap}
+.jcCenter{justify-content: center}
+.aiCenter{align-items: center}
+.hFull{height: 100%}
+.wFull{width: 100%}
+.ofAuto{overflow: auto}
+.ofHidden{overflow: hidden}
+.taCenter{text-align: center}
+.fwBold{font-weight: bold}
+.fsItalic{font-style: italic}

@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -it --rm --mount type=bind,source=$(pwd),target=/app --workdir=/app --user $(id -u):$(id -g) -p 8080:8080 node:14 bash
