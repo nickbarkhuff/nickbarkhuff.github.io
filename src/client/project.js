@@ -101,17 +101,20 @@ const main = (vars) => {
 
 export const project = {
     component: main,
-    framerate: 60,
-    onChange: (pixels) => {
-        console.log(pixels);
-    },
     defaultImage: [
-        i.r(0),
+        i.r(255),
         i.g(0),
         i.b(0),
-        i.a(0),
-        i.on(false)
+        i.a(255),
+        i.on(true)
     ],
+    // defaultImage: [
+    //     i.r(0),
+    //     i.g(0),
+    //     i.b(0),
+    //     i.a(0),
+    //     i.on(false)
+    // ],
     defaultVars: [{
         name: "foo",
         type: "int",

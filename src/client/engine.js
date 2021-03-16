@@ -1,6 +1,16 @@
 import React, {useState} from "react";
 
-export const useEngine = ({defaultImage = {}, defaultVars = {}, component}) => {
+let image = {};
+
+let vars = [];
+
+const effect = (callback, framerate) => {};
+
+export const engine = ({defaultImage = {}, defaultVars = {}, component}) => {
+    return [image, vars, effect];
+};
+
+const useEngine = ({defaultImage = {}, defaultVars = {}, component}) => {
     let varsTemp = {};
     defaultVars.forEach(variable => varsTemp[variable.name] = variable.value);
     const [vars, setVars] = useState(varsTemp);
