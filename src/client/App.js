@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from "react";
 
 import {engine} from "./engine.js";
-import {project, size, matrixFlat} from "./project.js";
+import {project, vars, size, matrixFlat} from "./project.js";
 
-const [image, vars, effect] = engine(project);
+const [render, update] = engine(project);
 
 const Matrix = (props) => {
     const i = props.image;
@@ -38,8 +38,8 @@ export const App = () => {
     const framerateMax = 250;
     const [framerate, setFramerate] = useState(60);
 
-    const [showBorders, setShowBorders] = useState(false);
-    const [showCircles, setShowCircles] = useState(false);
+    const [showBorders, setShowBorders] = useState(true);
+    const [showCircles, setShowCircles] = useState(true);
     const [showIds, setShowIds] = useState(false);
 
     const [realEndpoint, setRealEndpoint] = useState("");
@@ -66,22 +66,16 @@ export const App = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Mount Virtual
+    // Mount
     const [_, setCount] = useState(0);
     useEffect(() => {
         return effect(() => {
+            if(realMounted){
+                console.log("Updating real matrix");
+            }
             setCount(prev => prev++);
-        }, virtualFramerate);
-    }, [virtualFramerate]);
-
-    // Mount Real
-    useEffect(() => {
-        if(realMounted){
-            return effect(() => {
-                console.log("Real endpoint: " + realEndpoint);
-            }, realFramerate);
-        }
-    }, [realEndpoint, realFramerate, realMounted]);
+        }, framerate);
+    }, [framerate, realEndpoint, realMounted]);
 
     return (
         <div className={"ff1 c1 bg1 hFull dFlex"}>
@@ -90,7 +84,7 @@ export const App = () => {
                 <h2 className={"taCenter fsItalic pb1"}>Proof-of-concept</h2>
                 <div className={"pb2"}>
                     <p className={"pb1"}>
-                        Virtual {size}x{size} LED matrix. Scroll down to the "animations" section and click one of the play buttons to start.
+                        Virtual {size}x{size} LED matrix. Scroll down to the "state" section and play with the variables.
                     </p>
                     <p className={"pb1"}>
                         Can also control a real matrix of the same size; just enter the API endpoint and click the mount button to start sending network requests.
@@ -140,14 +134,14 @@ export const App = () => {
                     </div>
                     <div className={"pb1"}>
                         <label>
-                            Framerate: {realFramerate}
+                            Framerate: {framerate}
                             <br/>
                             <input
                                 type="range"
-                                min={realFramerateMin}
-                                max={realFramerateMax}
-                                value={realFramerate}
-                                onChange={e => setRealFramerate(e.target.value)}
+                                min={framerateMin}
+                                max={framerateMax}
+                                value={framerate}
+                                onChange={e => setFramerate(e.target.value)}
                             />
                         </label>
                     </div>
@@ -165,10 +159,6 @@ export const App = () => {
                             {realMounted ? "Mounted (click to unmount)" : "Unmounted (click to mount)"}
                         </button>
                     </div>
-                </div>
-                <h3 className={"taCenter fwBold fs2 pb1"}>Animations</h3>
-                <div className={"pb2"}>
-                    (animations)
                 </div>
                 <h3 className={"taCenter fwBold fs2 pb1"}>State</h3>
                 <div>
