@@ -42,10 +42,8 @@ export const App = () => {
     const [showCircles, setShowCircles] = useState(true);
     const [showIds, setShowIds] = useState(false);
 
-    const defaultEndpoint = "http://foobar.dev";
-    const [realEndpoint, setRealEndpoint] = useState(defaultEndpoint);
+    const [realEndpoint, setRealEndpoint] = useState("");
     const [realMounted, setRealMounted] = useState(false);
-    const exampleEndpoint = realEndpoint || defaultEndpoint;
 
     // Resize Window
     const ref = useRef();
@@ -82,7 +80,9 @@ export const App = () => {
     // Vars
     const [vars, setVars] = useState([]);
     useEffect(() => {
-        return onVarUpdate((newVars) => setVars(newVars));
+        return onVarUpdate((newVars) => {
+            setVars([...newVars]);
+        });
     }, []);
 
     return (
@@ -92,25 +92,12 @@ export const App = () => {
                 <h2 className={"taCenter fsItalic pb1"}>Proof-of-concept</h2>
                 <div className={"pb2"}>
                     <p className={"pb1"}>
-                        Virtual {size}x{size} LED matrix. Scroll down to the "state" section and play with the variables.
+                        Virtual {size}x{size} LED matrix. Change the variables in the "state" section to control.
                     </p>
                     <p className={"pb1"}>
-                        Can also control a real matrix of the same size; just enter the API endpoint and click the mount button to start sending network requests.
+                        Can also control a real matrix of the same size; enter the API endpoint and click the mount button to start sending network requests.
                     </p>
-                    <p className={"pb1"}>The framerate setting affects both the real matrix (if mounted) and the virtual matrix.</p>
-                    <p className={"pb1"}>
-                        If your endpoint is <span className={"fwBold"}>
-                            <a href={exampleEndpoint}>{exampleEndpoint}</a>
-                        </span>, the generated network requests will look like this:
-                    </p>
-                    <p className={"fwBold"}><a href={`${exampleEndpoint}/brightness/45/0`}>{exampleEndpoint}/brightness/45/0</a></p>
-                    <p className={"pb1"}>Turn LED 45 off (0 brightness)</p>
-                    <p className={"fwBold"}><a href={`${exampleEndpoint}/brightness/45/255`}>{exampleEndpoint}/brightness/45/255</a></p>
-                    <p className={"pb1"}>Turn LED 45 to full brightness</p>
-                    <p className={"fwBold"}><a href={`${exampleEndpoint}/color/45/255/0/0`}>{exampleEndpoint}/color/45/255/0/0</a></p>
-                    <p className={"pb1"}>Make LED 45 red</p>
-                    <p className={"fwBold"}><a href={`${exampleEndpoint}/color/45/0/0/255`}>{exampleEndpoint}/color/45/0/0/255</a></p>
-                    <p>Make LED 45 blue</p>
+                    <p>The framerate setting affects both the real matrix (if mounted) and the virtual matrix.</p>
                 </div>
                 <h3 className={"taCenter fwBold fs2 pb1"}>Settings</h3>
                 <div className={"pb2"}>
@@ -162,6 +149,7 @@ export const App = () => {
                             Endpoint: <input
                             type="text"
                             value={realEndpoint}
+                            placeholder={"http://foobar.dev"}
                             onChange={e => setRealEndpoint(e.target.value)}
                         />
                         </label>
