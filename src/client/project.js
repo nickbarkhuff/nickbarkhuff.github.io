@@ -99,6 +99,32 @@ const main = (vars) => {
     // });
 };
 
+export const vars = [{
+    name: "Center",
+    type: "int",
+    value: halfSize,
+    min: 0,
+    max: halfSize
+}, {
+    name: "Red",
+    type: "int",
+    value: 255,
+    min: 0,
+    max: 255
+}, {
+    name: "Green",
+    type: "int",
+    value: 0,
+    min: 0,
+    max: 255
+}, {
+    name: "Blue",
+    type: "int",
+    value: 0,
+    min: 0,
+    max: 255
+}];
+
 export const project = {
     component: main,
     defaultImage: [
@@ -115,21 +141,5 @@ export const project = {
     //     i.a(0),
     //     i.on(false)
     // ],
-    defaultVars: [{
-        name: "foo",
-        type: "int",
-        value: 0,
-        min: 0,
-        max: halfSize
-    }, {
-        name: "bar",
-        type: "int",
-        value: 0,
-        min: 0,
-        max: 255
-    }, {
-        name: "baz",
-        type: "bool",
-        value: false
-    }]
+    defaultVars: []
 };

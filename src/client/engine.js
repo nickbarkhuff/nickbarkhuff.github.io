@@ -7,7 +7,7 @@ let vars = [];
 const effect = (callback, framerate) => {};
 
 export const engine = ({defaultImage = {}, defaultVars = {}, component}) => {
-    return [image, vars, effect];
+    return [() => {}, () => {}];
 };
 
 const useEngine = ({defaultImage = {}, defaultVars = {}, component}) => {

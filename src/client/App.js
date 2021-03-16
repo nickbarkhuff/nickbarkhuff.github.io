@@ -67,13 +67,13 @@ export const App = () => {
     }, []);
 
     // Mount
-    const [_, setCount] = useState(0);
+    const [image, setImage] = useState({});
     useEffect(() => {
-        return effect(() => {
+        return render((newImage, changes) => {
+            setImage(newImage);
             if(realMounted){
-                console.log("Updating real matrix");
+                console.log("CHANGES", changes);
             }
-            setCount(prev => prev++);
         }, framerate);
     }, [framerate, realEndpoint, realMounted]);
 
