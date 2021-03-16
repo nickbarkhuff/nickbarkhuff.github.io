@@ -175,7 +175,7 @@ export const App = () => {
                 <h3 className={"taCenter fwBold fs2 pb1"}>State</h3>
                 <div>
                     {vars.map(variable => (
-                        <div className={"pb1"}>
+                        <div className={"pb1"} key={variable.name}>
                             <label>
                                 {variable.name}: {variable.type === "bool" ? (variable.value ? "true" : "false") : variable.value}
                                 <br/>
