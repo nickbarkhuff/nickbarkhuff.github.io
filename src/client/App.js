@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from "react";
 
 import {engine} from "./engine.js";
-import {project, vars, size, matrixFlat} from "./project.js";
+import {project, size, matrixFlat} from "./project.js";
 
-const [render, update] = engine(project);
+const [onImageUpdate, onVarUpdate] = engine(project);
 
 const Matrix = (props) => {
     const i = props.image;
@@ -42,8 +42,10 @@ export const App = () => {
     const [showCircles, setShowCircles] = useState(true);
     const [showIds, setShowIds] = useState(false);
 
-    const [realEndpoint, setRealEndpoint] = useState("");
+    const defaultEndpoint = "http://foobar.dev";
+    const [realEndpoint, setRealEndpoint] = useState(defaultEndpoint);
     const [realMounted, setRealMounted] = useState(false);
+    const exampleEndpoint = realEndpoint || defaultEndpoint;
 
     // Resize Window
     const ref = useRef();
@@ -66,16 +68,22 @@ export const App = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Mount
+    // Image
     const [image, setImage] = useState({});
     useEffect(() => {
-        return render((newImage, changes) => {
+        return onImageUpdate((newImage) => {
             setImage(newImage);
             if(realMounted){
-                console.log("CHANGES", changes);
+                console.log("Updating real matrix");
             }
         }, framerate);
     }, [framerate, realEndpoint, realMounted]);
+
+    // Vars
+    const [vars, setVars] = useState([]);
+    useEffect(() => {
+        return onVarUpdate((newVars) => setVars(newVars));
+    }, []);
 
     return (
         <div className={"ff1 c1 bg1 hFull dFlex"}>
@@ -90,15 +98,19 @@ export const App = () => {
                         Can also control a real matrix of the same size; just enter the API endpoint and click the mount button to start sending network requests.
                     </p>
                     <p className={"pb1"}>The framerate setting affects both the real matrix (if mounted) and the virtual matrix.</p>
-                    <p className={"pb1"}>If your endpoint is <span className={"fwBold"}>localhost:3000</span>, the generated network requests will look like this:</p>
-                    <p className={"fwBold"}>localhost:3000/brightness/11/0</p>
-                    <p className={"pb1"}>Turn LED 11 off (0 brightness)</p>
-                    <p className={"fwBold"}>localhost:3000/brightness/22/255</p>
-                    <p className={"pb1"}>Turn LED 22 to full brightness</p>
-                    <p className={"fwBold"}>localhost:3000/color/33/255/0/0</p>
-                    <p className={"pb1"}>Make LED 33 red</p>
-                    <p className={"fwBold"}>localhost:3000/color/44/0/0/255</p>
-                    <p>Make LED 44 blue</p>
+                    <p className={"pb1"}>
+                        If your endpoint is <span className={"fwBold"}>
+                            <a href={exampleEndpoint}>{exampleEndpoint}</a>
+                        </span>, the generated network requests will look like this:
+                    </p>
+                    <p className={"fwBold"}><a href={`${exampleEndpoint}/brightness/45/0`}>{exampleEndpoint}/brightness/45/0</a></p>
+                    <p className={"pb1"}>Turn LED 45 off (0 brightness)</p>
+                    <p className={"fwBold"}><a href={`${exampleEndpoint}/brightness/45/255`}>{exampleEndpoint}/brightness/45/255</a></p>
+                    <p className={"pb1"}>Turn LED 45 to full brightness</p>
+                    <p className={"fwBold"}><a href={`${exampleEndpoint}/color/45/255/0/0`}>{exampleEndpoint}/color/45/255/0/0</a></p>
+                    <p className={"pb1"}>Make LED 45 red</p>
+                    <p className={"fwBold"}><a href={`${exampleEndpoint}/color/45/0/0/255`}>{exampleEndpoint}/color/45/0/0/255</a></p>
+                    <p>Make LED 45 blue</p>
                 </div>
                 <h3 className={"taCenter fwBold fs2 pb1"}>Settings</h3>
                 <div className={"pb2"}>

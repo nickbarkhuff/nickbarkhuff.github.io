@@ -4,10 +4,14 @@ let image = {};
 
 let vars = [];
 
-const effect = (callback, framerate) => {};
-
 export const engine = ({defaultImage = {}, defaultVars = {}, component}) => {
-    return [() => {}, () => {}];
+    const onImageUpdate = (cb, framerate) => {};
+
+    const onVarUpdate = (cb) => {
+        cb(defaultVars);
+    };
+
+    return [onImageUpdate, onVarUpdate];
 };
 
 const useEngine = ({defaultImage = {}, defaultVars = {}, component}) => {
