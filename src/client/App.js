@@ -1,11 +1,18 @@
 import React, {useState, useEffect, useRef} from "react";
 
-import {useEngine} from "./engine.js";
-import {project, size, matrix} from "./project.js";
+import {engine} from "./engine.js";
+import {project, size, matrixFlat} from "./project.js";
+
+const virtualFramerate = 60;
+
+const [image, vars, effect] = engine(project);
+const [mountRealMatrix, unmountRealMatrix] = effect(() => {
+    console.log("Updating real matrix");
+});
 
 const Matrix = (props) => {
     const i = props.image;
-    return matrix
+    return matrixFlat
         .map(id => (
             <div
                 key={id}
@@ -30,18 +37,21 @@ const Matrix = (props) => {
 };
 
 export const App = () => {
-    const [image, vars] = useEngine(project);
 
-    const ref = useRef();
+    // Settings
     const [showBorders, setShowBorders] = useState(false);
     const [showCircles, setShowCircles] = useState(true);
     const [showIds, setShowIds] = useState(false);
+    const [realEndpoint, setRealEndpoint] = useState("");
+    const [realFramerate, setRealFramerate] = useState(60);
+    const [realMounted, setRealMounted] = useState(false);
 
+    // Resize Window
+    const ref = useRef();
     const [dimensions, setDimensions] = useState({
         height: 0,
         width: 0
     });
-
     const handleResize = () => {
         const height = ref.current.offsetHeight;
         const width = ref.current.offsetWidth;
@@ -51,18 +61,32 @@ export const App = () => {
             width: smaller
         });
     };
-
     useEffect(() => {
         handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    // Mount Virtual
+    const [_, setCount] = useState(0);
+    useEffect(() => {
+        const [mountVirtualMatrix, unmountVirtualMatrix] = effect(() => {
+            setCount(prev => prev++);
+        });
+        mountVirtualMatrix(virtualFramerate);
+        return unmountVirtualMatrix;
+    }, []);
+
+    // Mount Real
+    useEffect(() => {
+        // ...
+    }, [realEndpoint, realFramerate, realMounted]);
+
     return (
         <div className={"ff1 c1 bg1 hFull dFlex"}>
             <div className={"bg2 p2 flex1 ofAuto"}>
                 <h1 className={"taCenter fwBold fs3"}>DreamPixel</h1>
-                <h2 className={"taCenter pb1 fsItalic"}>Proof-of-concept Demo</h2>
+                <h2 className={"taCenter pb1 fsItalic"}>Proof-of-concept</h2>
                 <div>
                     <label>
                         <input

@@ -12,7 +12,7 @@ export const useEngine = ({defaultImage = {}, defaultVars = {}, component}) => {
             value: vars[variable.name],
             update: (value) => setVars(prev => ({
                 ...prev,
-                [variable.name]: value
+                [variable.name]: variable.type === "int" ? parseInt(value) : value
             }))
         }))
     ];
