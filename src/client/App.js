@@ -14,11 +14,11 @@ const Matrix = (props) => {
                 className={"ofHidden"}
                 style={{
                     flexBasis: `calc(100% * (1/${size}))`,
-                    padding: props.circles ? "2px" : "0"
+                    padding: props.borders && !props.circles ? "0" : "2px"
                 }}
             >
                 <div
-                    className={"hFull"}
+                    className={"hFull dFlex jcCenter aiCenter"}
                     style={{
                         borderRadius: props.circles ? "50%" : "0",
                         border: props.borders ? "1px solid white" : "none",
